@@ -1,0 +1,44 @@
+{
+	"schemaVersion": 1,
+	"id": "little-guys",
+	"version": "${version}",
+	"name": "Little Guys",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/little-guys/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.partatoes.littleguys.LittleGuys"
+		],
+		"client": [
+			"com.partatoes.littleguys.LittleGuysClient"
+		],
+		"fabric-datagen": [
+			"com.partatoes.littleguys.LittleGuysDataGenerator"
+		]
+	},
+	"mixins": [
+		"little-guys.mixins.json",
+		{
+			"config": "little-guys.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.20.6",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
