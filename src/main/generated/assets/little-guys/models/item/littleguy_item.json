@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "little_guys:item/littleguy_item"
+    "layer0": "little-guys:item/littleguy_item"
   }
 }
