@@ -1,8 +1,11 @@
 package com.partatoes.littleguys;
 
+import com.partatoes.littleguys.entity.ModEntities;
+import com.partatoes.littleguys.entity.custom.LittleGuyEntity;
 import com.partatoes.littleguys.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,5 +25,8 @@ public class LittleGuys implements ModInitializer {
 		LOGGER.info("Hello Fabric world!");
 
 		ModItems.registerModItems();
+
+		FabricDefaultAttributeRegistry.register(ModEntities.LITTLEGUY_ENTITY, LittleGuyEntity.createLittleGuyAttributes());
+		ModEntities.registerModEntities();
 	}
 }
