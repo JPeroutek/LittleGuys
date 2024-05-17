@@ -20,5 +20,6 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.LITTLEGUY_ITEM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.SOULSAND_PILE_ITEM, Models.GENERATED);
     }
 }

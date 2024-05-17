@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_soulsand_pile": {
+      "conditions": {
+        "items": [
+          {
+            "items": "little-guys:soulsand_pile"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:soul_sand"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_soulsand_pile"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:soul_sand"
+    ]
+  }
+}
