@@ -40,6 +40,18 @@ public class ModRecipeProvider  extends FabricRecipeProvider {
                 .criterion(hasItem(Items.CLAY_BALL), conditionsFromItem(Items.CLAY_BALL))
                 .offerTo(exporter, new Identifier(LittleGuys.MOD_ID, "littleguy_from_clay_ball_and_soulsand_pile"));
 
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.LITTLEHORSE_ITEM, 1)
+                .pattern("s  ")
+                .pattern("cdc")
+                .pattern("c c")
+                .input('s', ModItems.SOULSAND_PILE_ITEM)
+                .input('c', Items.CLAY_BALL)
+                .input('d', Items.SADDLE)
+                .criterion(hasItem(ModItems.SOULSAND_PILE_ITEM), conditionsFromItem(ModItems.SOULSAND_PILE_ITEM))
+                .criterion(hasItem(Items.CLAY_BALL), conditionsFromItem(Items.CLAY_BALL))
+                .criterion(hasItem(Items.SADDLE), conditionsFromItem(Items.SADDLE))
+                .offerTo(exporter, new Identifier(LittleGuys.MOD_ID, "littlehorse_from_clay_balls_and_soulsand_pile"));
+
         ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, ModItems.SOULSAND_PILE_ITEM, 4)
                 .input(Blocks.SOUL_SAND)
                 .criterion(hasItem(Blocks.SOUL_SAND), conditionsFromItem(Blocks.SOUL_SAND))

@@ -23,7 +23,7 @@ public class ModEntities {
             Registries.ENTITY_TYPE,
             LITTLEHORSE_ID,
             EntityType.Builder.create(LittleHorseEntity::new, SpawnGroup.MISC)
-                    .dimensions(.3f, .6f)
+                    .dimensions(.3f, .4f)
                     .build());
 
     public static void registerModEntities() {

@@ -17,6 +17,7 @@ public class ModItemGroups {
                     .icon(() -> new ItemStack(ModItems.LITTLEGUY_ITEM))
                     .entries((displayContext, entries) -> {
                         entries.add(ModItems.LITTLEGUY_ITEM);
+                        entries.add(ModItems.LITTLEHORSE_ITEM);
                         entries.add(ModItems.SOULSAND_PILE_ITEM);
                     }).build());
 

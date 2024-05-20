@@ -14,6 +14,7 @@ import net.minecraft.util.Identifier;
 public class ModItems {
 
     public static final Item LITTLEGUY_ITEM = registerItem("littleguy_item", new SpawnEggItem(ModEntities.LITTLEGUY_ENTITY, 13158600, 13158600, new Item.Settings()));
+    public static final Item LITTLEHORSE_ITEM = registerItem("littlehorse_item", new SpawnEggItem(ModEntities.LITTLEHORSE_ENTITY, 13158600, 13158600, new Item.Settings()));
     public static final Item SOULSAND_PILE_ITEM = registerItem("soulsand_pile", new Item(new Item.Settings()));
 
     public static Item registerItem(String name, Item item) {
