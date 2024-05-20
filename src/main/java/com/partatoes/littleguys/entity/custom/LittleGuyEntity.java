@@ -23,6 +23,7 @@ public class LittleGuyEntity extends MobEntity {
 
     public static DefaultAttributeContainer.Builder createLittleGuyAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 6);
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 6)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, .8);
     }
 }
