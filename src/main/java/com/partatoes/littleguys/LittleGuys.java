@@ -2,6 +2,7 @@ package com.partatoes.littleguys;
 
 import com.partatoes.littleguys.entity.ModEntities;
 import com.partatoes.littleguys.entity.custom.LittleGuyEntity;
+import com.partatoes.littleguys.entity.custom.LittleHorseEntity;
 import com.partatoes.littleguys.item.ModItemGroups;
 import com.partatoes.littleguys.item.ModItems;
 import net.fabricmc.api.ModInitializer;
@@ -29,6 +30,7 @@ public class LittleGuys implements ModInitializer {
 		ModItemGroups.registerItemGroups();
 
 		FabricDefaultAttributeRegistry.register(ModEntities.LITTLEGUY_ENTITY, LittleGuyEntity.createLittleGuyAttributes());
+		FabricDefaultAttributeRegistry.register(ModEntities.LITTLEHORSE_ENTITY, LittleHorseEntity.createLittleHorseAttributes());
 		ModEntities.registerModEntities();
 	}
 }
