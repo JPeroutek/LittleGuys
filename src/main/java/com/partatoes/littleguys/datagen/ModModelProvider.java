@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.Models;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 
 public class ModModelProvider extends FabricModelProvider {
     public ModModelProvider(FabricDataOutput output) {
@@ -22,5 +24,8 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.LITTLEGUY_ITEM, Models.GENERATED);
         itemModelGenerator.register(ModItems.LITTLEHORSE_ITEM, Models.GENERATED);
         itemModelGenerator.register(ModItems.SOULSAND_PILE_ITEM, Models.GENERATED);
+        for (Item coloredLittleGuy : ModItems.LITTLEGUY_COLORS.values()) {
+            itemModelGenerator.register(coloredLittleGuy, ModItems.LITTLEGUY_ITEM, Models.GENERATED);
+        }
     }
 }

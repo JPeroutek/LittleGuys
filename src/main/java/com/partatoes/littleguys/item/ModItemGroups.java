@@ -2,6 +2,7 @@ package com.partatoes.littleguys.item;
 
 import com.partatoes.littleguys.LittleGuys;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
@@ -17,6 +18,9 @@ public class ModItemGroups {
                     .icon(() -> new ItemStack(ModItems.LITTLEGUY_ITEM))
                     .entries((displayContext, entries) -> {
                         entries.add(ModItems.LITTLEGUY_ITEM);
+                        for (Item x : ModItems.LITTLEGUY_COLORS.values()) {
+                            entries.add(x);
+                        }
                         entries.add(ModItems.LITTLEHORSE_ITEM);
                         entries.add(ModItems.SOULSAND_PILE_ITEM);
                     }).build());
