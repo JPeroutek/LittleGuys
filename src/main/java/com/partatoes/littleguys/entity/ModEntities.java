@@ -1,13 +1,20 @@
 package com.partatoes.littleguys.entity;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.partatoes.littleguys.LittleGuys;
 import com.partatoes.littleguys.entity.custom.LittleGuyEntity;
 import com.partatoes.littleguys.entity.custom.LittleHorseEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ModEntities {
     public static final Identifier LITTLEGUY_ID = new Identifier(LittleGuys.MOD_ID, "littleguy");
@@ -25,6 +32,25 @@ public class ModEntities {
             EntityType.Builder.create(LittleHorseEntity::new, SpawnGroup.MISC)
                     .dimensions(.3f, .4f)
                     .build());
+    public static final BiMap<DyeColor, Identifier> COLOR_LITTLEGUY_IDS_BIMAP = Stream.of(DyeColor.values())
+            .collect(Collectors.toMap(
+                    (color) -> color,
+                    (color) -> new Identifier(LittleGuys.MOD_ID, "littleguy_entity_" + color.toString()),
+                    (a,b) -> a,
+                    HashBiMap::create));
+    public static final BiMap<DyeColor, EntityType<LittleGuyEntity>> COLOR_LITTLEGUY_BIMAP = Stream.of(DyeColor.values())
+            .collect(Collectors.toMap(
+                    (color) -> color,
+                    (color) -> {
+                        return Registry.register(
+                                Registries.ENTITY_TYPE,
+                                COLOR_LITTLEGUY_IDS_BIMAP.get(color),
+                                EntityType.Builder.create(LittleGuyEntity::new, SpawnGroup.MISC)
+                                    .dimensions(.3f, .6f)
+                                    .build());
+                    },
+                    (a,b) -> a,
+                    HashBiMap::create));
 
     public static void registerModEntities() {
         LittleGuys.LOGGER.info("Registering ModEntities for " + LittleGuys.MOD_ID);

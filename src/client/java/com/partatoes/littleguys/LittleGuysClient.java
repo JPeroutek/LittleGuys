@@ -3,9 +3,9 @@ package com.partatoes.littleguys;
 import com.partatoes.littleguys.entity.*;
 import com.partatoes.littleguys.item.ModColorProviders;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.util.DyeColor;
 
 public class LittleGuysClient implements ClientModInitializer {
 	@Override
@@ -17,6 +17,11 @@ public class LittleGuysClient implements ClientModInitializer {
 
 		EntityRendererRegistry.register(ModEntities.LITTLEHORSE_ENTITY, LittleHorseRenderer::new);
 		EntityModelLayerRegistry.registerModelLayer(ModModelLayers.LITTLEHORSE, LittleHorseModel::getTexturedModelData);
+
+		for (DyeColor c : DyeColor.values()) {
+			EntityRendererRegistry.register(ModEntities.COLOR_LITTLEGUY_BIMAP.get(c), LittleGuyRenderer::new);
+			EntityModelLayerRegistry.registerModelLayer(ModModelLayers.COLOR_LITTLEGUY_MODEL_LAYERS.get(c), LittleGuyModel::getTexturedModelData);
+		}
 
 		ModColorProviders.registerColorProviders();
 	}

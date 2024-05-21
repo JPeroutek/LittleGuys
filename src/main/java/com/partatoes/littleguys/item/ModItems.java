@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.partatoes.littleguys.LittleGuys;
 import com.partatoes.littleguys.entity.ModEntities;
 import com.partatoes.littleguys.entity.custom.LittleGuyEntity;
+import com.partatoes.littleguys.item.custom.LittleGuySpawnEggItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
@@ -33,7 +34,7 @@ public class ModItems {
     public static final BiMap<DyeColor, Item> LITTLEGUY_COLORS = Stream.of(DyeColor.values())
             .collect(Collectors.toMap(
                 (color) -> color,
-                (color) -> registerItem("littleguy_color_" + ((DyeColor) color).asString(), new Item(new Item.Settings().component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getFireworkColor(), false)))),
+                (color) -> registerItem("littleguy_color_" + ((DyeColor) color).asString(), new LittleGuySpawnEggItem(ModEntities.COLOR_LITTLEGUY_BIMAP.get(color), color, new Item.Settings())),
                 (a, b) -> a,
                 HashBiMap::create));
 

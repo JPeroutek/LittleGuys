@@ -8,6 +8,7 @@ import com.partatoes.littleguys.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.minecraft.entity.EntityType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,9 @@ public class LittleGuys implements ModInitializer {
 
 		FabricDefaultAttributeRegistry.register(ModEntities.LITTLEGUY_ENTITY, LittleGuyEntity.createLittleGuyAttributes());
 		FabricDefaultAttributeRegistry.register(ModEntities.LITTLEHORSE_ENTITY, LittleHorseEntity.createLittleHorseAttributes());
+		for (EntityType<LittleGuyEntity> lge : ModEntities.COLOR_LITTLEGUY_BIMAP.values()) {
+			FabricDefaultAttributeRegistry.register(lge, LittleGuyEntity.createLittleGuyAttributes());
+		}
 		ModEntities.registerModEntities();
 	}
 }

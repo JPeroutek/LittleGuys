@@ -1,13 +1,8 @@
 package com.partatoes.littleguys.entity.custom;
 
-import com.google.common.collect.Maps;
 import com.partatoes.littleguys.entity.goal.BoardLittleHorseGoal;
 import com.partatoes.littleguys.item.ModItems;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -16,15 +11,9 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.LootTables;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Util;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -39,7 +28,7 @@ public class LittleGuyEntity extends MobEntity {
     private static final TrackedData<Byte> COLOR;
     private static final Map<DyeColor, float[]> COLORS;
 
-    public LittleGuyEntity(EntityType<? extends MobEntity> entityType, World world) {
+    public LittleGuyEntity(EntityType<? extends LittleGuyEntity> entityType, World world) {
         super(entityType, world);
     }
 
