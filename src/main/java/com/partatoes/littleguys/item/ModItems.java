@@ -1,5 +1,7 @@
 package com.partatoes.littleguys.item;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Maps;
 import com.partatoes.littleguys.LittleGuys;
 import com.partatoes.littleguys.entity.ModEntities;
@@ -20,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ModItems {
 
@@ -27,12 +30,12 @@ public class ModItems {
     public static final Item LITTLEHORSE_ITEM = registerItem("littlehorse_item", new SpawnEggItem(ModEntities.LITTLEHORSE_ENTITY, 13158600, 13158600, new Item.Settings()));
     public static final Item SOULSAND_PILE_ITEM = registerItem("soulsand_pile", new Item(new Item.Settings()));
 
-    public static final Map<DyeColor, Item> LITTLEGUY_COLORS = Arrays.stream(
-            DyeColor.values()).collect(Collectors.toMap(
+    public static final BiMap<DyeColor, Item> LITTLEGUY_COLORS = Stream.of(DyeColor.values())
+            .collect(Collectors.toMap(
                 (color) -> color,
-                (color) -> registerItem("littleguy_color_" + ((DyeColor) color).asString(), new Item(new Item.Settings().component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getFireworkColor(), false))))));
-
-    public static final Map<Item, DyeColor> INVERTED_COLORS_MAP = invertMap(LITTLEGUY_COLORS);
+                (color) -> registerItem("littleguy_color_" + ((DyeColor) color).asString(), new Item(new Item.Settings().component(DataComponentTypes.DYED_COLOR, new DyedColorComponent(color.getFireworkColor(), false)))),
+                (a, b) -> a,
+                HashBiMap::create));
 
     public static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, new Identifier(LittleGuys.MOD_ID, name), item);
@@ -44,13 +47,5 @@ public class ModItems {
 
     private static void addItemsToIngredientTabItemGroup(FabricItemGroupEntries entries) {
         entries.add(SOULSAND_PILE_ITEM);
-    }
-
-    public static <K, V> Map<V, K> invertMap(Map<K, V> map) {
-        Map<V, K> invertedMap = new HashMap<>();
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            invertedMap.put(entry.getValue(), entry.getKey());
-        }
-        return invertedMap;
     }
 }
