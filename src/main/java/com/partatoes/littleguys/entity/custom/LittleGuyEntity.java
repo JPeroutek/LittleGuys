@@ -94,7 +94,7 @@ public class LittleGuyEntity extends MobEntity {
     @Nullable
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-        this.setColor(DyeColor.byId(16));
+        this.setColor(this.getColor());
         return super.initialize(world, difficulty, spawnReason, entityData);
     }
 

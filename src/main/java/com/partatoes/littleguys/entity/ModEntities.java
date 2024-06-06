@@ -7,11 +7,11 @@ import com.partatoes.littleguys.entity.custom.LittleGuyEntity;
 import com.partatoes.littleguys.entity.custom.LittleHorseEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,7 +45,12 @@ public class ModEntities {
                         return Registry.register(
                                 Registries.ENTITY_TYPE,
                                 COLOR_LITTLEGUY_IDS_BIMAP.get(color),
-                                EntityType.Builder.create(LittleGuyEntity::new, SpawnGroup.MISC)
+                                EntityType.Builder.create(
+                                        (EntityType<LittleGuyEntity> t, World w) -> {
+                                            LittleGuyEntity lg = new LittleGuyEntity(t, w);
+                                            lg.setColor(color);
+                                            return lg;
+                                        }, SpawnGroup.MISC)
                                     .dimensions(.3f, .6f)
                                     .build());
                     },
