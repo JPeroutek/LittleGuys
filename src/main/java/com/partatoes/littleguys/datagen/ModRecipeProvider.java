@@ -1,6 +1,7 @@
 package com.partatoes.littleguys.datagen;
 
 import com.partatoes.littleguys.LittleGuys;
+import com.partatoes.littleguys.entity.ModEntities;
 import com.partatoes.littleguys.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
@@ -8,6 +9,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
 import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
@@ -58,5 +60,14 @@ public class ModRecipeProvider  extends FabricRecipeProvider {
                 .offerTo(exporter);
 
         offer2x2CompactingRecipe(exporter, RecipeCategory.MISC, Blocks.SOUL_SAND, ModItems.SOULSAND_PILE_ITEM);
+
+        ModItems.LITTLEGUY_COLORS.forEach((dc, item) -> {
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.MISC, item)
+                    .input(ModItems.LITTLEGUY_ITEM)
+                    .input(DyeItem.byColor(dc))
+                    .criterion(hasItem(DyeItem.byColor(dc)), conditionsFromItem(DyeItem.byColor(dc)))
+                    .criterion(hasItem(ModItems.LITTLEGUY_ITEM), conditionsFromItem(ModItems.LITTLEGUY_ITEM))
+                    .offerTo(exporter);
+        });
     }
 }
