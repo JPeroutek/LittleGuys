@@ -16,7 +16,6 @@ import net.minecraft.world.event.GameEvent;
 
 public class ModDispenserBehavior {
     public static ItemDispenserBehavior LITTLEGUY_DISPENSER_BEHAVIOR = new ItemDispenserBehavior(){
-
         @Override
         public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
             Direction direction = pointer.state().get(DispenserBlock.FACING);

@@ -1,9 +1,10 @@
 package com.partatoes.littleguys.entity.custom;
 
+import com.partatoes.littleguys.entity.ModEntities;
 import com.partatoes.littleguys.entity.goal.BoardLittleHorseGoal;
 import com.partatoes.littleguys.item.ModItems;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -11,6 +12,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.DyeColor;
@@ -23,7 +25,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class LittleGuyEntity extends MobEntity {
+public class LittleGuyEntity extends PathAwareEntity {
 
     private static final TrackedData<Byte> COLOR;
     private static final Map<DyeColor, float[]> COLORS;
@@ -35,13 +37,19 @@ public class LittleGuyEntity extends MobEntity {
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new BoardLittleHorseGoal(this));
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 1, false));
+        this.goalSelector.add(2, new BoardLittleHorseGoal(this));
+        this.goalSelector.add(3, new WanderAroundGoal(this, .3));
+
+        this.targetSelector.add(0, new RevengeGoal(this, new Class[0]));
+        this.targetSelector.add(1, new ActiveTargetGoal<LittleGuyEntity>(this, LittleGuyEntity.class, 1, true, true, this::canLittleGuyAttackTarget));
     }
 
     public static DefaultAttributeContainer.Builder createLittleGuyAttributes() {
         return MobEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 6)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, .8);
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, .35)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, .5);
     }
     private static float[] getDyedColor(DyeColor color) {
         if (color == DyeColor.WHITE) {
@@ -77,6 +85,13 @@ public class LittleGuyEntity extends MobEntity {
         Item drop = ModItems.LITTLEGUY_COLORS.getOrDefault(this.getColor(), ModItems.LITTLEGUY_ITEM);
 
         this.dropItem(drop);
+    }
+
+    public boolean canLittleGuyAttackTarget(@Nullable LivingEntity target){
+        if (target instanceof LittleGuyEntity) {
+            return ((LittleGuyEntity) target).getColor() != this.getColor();
+        }
+        return false;
     }
 
     @Override
