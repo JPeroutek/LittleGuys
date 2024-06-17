@@ -1,5 +1,4 @@
 name: mc-publish
-uses: Kir-Antipov/mc-publish@v3.3.0
 on:
   workflow_dispatch:
 jobs:
@@ -7,6 +6,7 @@ jobs:
     # ...
     permissions:
       contents: write
+    runs-on: ubuntu-22.04
     steps:
       - uses: Kir-Antipov/mc-publish@v3.3
         with:
