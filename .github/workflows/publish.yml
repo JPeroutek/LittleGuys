@@ -12,14 +12,10 @@ jobs:
         with:
           # Only include this section if you wish to publish
           # your assets on Modrinth.
-          modrinth-id: AANobbMI
+          modrinth-id: of19plFw
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # Only include this section if you wish to publish
           # your assets on CurseForge.
-          curseforge-id: 394468
-          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-
-          # Only include this section if you wish to publish
-          # your assets on GitHub.
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          #curseforge-id: 394468
+          #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
