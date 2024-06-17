@@ -19,7 +19,7 @@ public class LittleGuyModel<T extends LittleGuyEntity> extends BipedEntityModel<
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-        super.render(matrices, vertices, light, overlay, red, green, blue, alpha);
+    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
+        super.render(matrices, vertices, light, overlay, color);
     }
 }

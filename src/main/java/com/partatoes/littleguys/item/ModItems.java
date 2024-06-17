@@ -39,7 +39,7 @@ public class ModItems {
                 HashBiMap::create));
 
     public static Item registerItem(String name, Item item) {
-        return Registry.register(Registries.ITEM, new Identifier(LittleGuys.MOD_ID, name), item);
+        return Registry.register(Registries.ITEM, Identifier.of(LittleGuys.MOD_ID, name), item);
     }
     public static void registerModItems() {
         LittleGuys.LOGGER.info("Registering items for " + LittleGuys.MOD_ID);

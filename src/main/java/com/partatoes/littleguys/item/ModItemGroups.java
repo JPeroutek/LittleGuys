@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class ModItemGroups {
 
-    public static final ItemGroup LITTLEGUYS_GROUP = Registry.register(Registries.ITEM_GROUP, new Identifier(LittleGuys.MOD_ID, "little-guys"),
+    public static final ItemGroup LITTLEGUYS_GROUP = Registry.register(Registries.ITEM_GROUP, Identifier.of(LittleGuys.MOD_ID, "little-guys"),
             FabricItemGroup.builder()
                     .displayName(Text.translatable("itemgroup.littleguys"))
                     .icon(() -> new ItemStack(ModItems.LITTLEGUY_ITEM))

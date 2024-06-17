@@ -22,7 +22,7 @@ public class LittleHorseRenderer extends AbstractHorseEntityRenderer<LittleHorse
 
     @Override
     public Identifier getTexture(LittleHorseEntity entity) {
-        return new Identifier("textures/block/clay.png");
+        return Identifier.ofVanilla("textures/block/clay.png");
     }
 
     @Override

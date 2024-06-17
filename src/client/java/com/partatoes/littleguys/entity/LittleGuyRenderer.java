@@ -36,7 +36,7 @@ public class LittleGuyRenderer extends BipedEntityRenderer<LittleGuyEntity, Litt
 
     @Override
     public Identifier getTexture(LittleGuyEntity entity) {
-        return new Identifier("textures/block/clay.png");
+        return Identifier.ofVanilla("textures/block/clay.png");
     }
 
     @Override
@@ -113,17 +113,18 @@ public class LittleGuyRenderer extends BipedEntityRenderer<LittleGuyEntity, Litt
         if (renderLayer != null) {
             VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
             int q = LivingEntityRenderer.getOverlay(mobEntity, this.getAnimationCounter(mobEntity, g));
-            DyeColor dyeColor = mobEntity.getColor();
-            int renderColor = mobEntity.getColor().getSignColor();
-            ((Model)this.model).render(
-                    matrixStack,
-                    vertexConsumer,
-                    i,
-                    q,
-                    ColorHelper.Argb.getRed(renderColor) / 255f,
-                    ColorHelper.Argb.getGreen(renderColor) / 255f,
-                    ColorHelper.Argb.getBlue(renderColor) / 255f,
-                    bl2 ? 0.15f : 1.0f);
+            int renderColor = mobEntity.getColor().getEntityColor();
+
+            ((Model) this.model).render(matrixStack, vertexConsumer, i, q, renderColor);
+//            ((Model)this.model).render(
+//                    matrixStack,
+//                    vertexConsumer,
+//                    i,
+//                    q,
+//                    ColorHelper.Argb.getRed(renderColor) / 255f,
+//                    ColorHelper.Argb.getGreen(renderColor) / 255f,
+//                    ColorHelper.Argb.getBlue(renderColor) / 255f,
+//                    bl2 ? 0.15f : 1.0f);
         }
         matrixStack.pop();
     }

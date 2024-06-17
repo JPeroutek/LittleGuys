@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ModEntities {
-    public static final Identifier LITTLEGUY_ID = new Identifier(LittleGuys.MOD_ID, "littleguy");
-    public static final Identifier LITTLEHORSE_ID = new Identifier(LittleGuys.MOD_ID, "littlehorse");
+    public static final Identifier LITTLEGUY_ID = Identifier.of(LittleGuys.MOD_ID, "littleguy");
+    public static final Identifier LITTLEHORSE_ID = Identifier.of(LittleGuys.MOD_ID, "littlehorse");
 
     public static final EntityType<LittleGuyEntity> LITTLEGUY_ENTITY = Registry.register(
             Registries.ENTITY_TYPE,
@@ -35,7 +35,7 @@ public class ModEntities {
     public static final BiMap<DyeColor, Identifier> COLOR_LITTLEGUY_IDS_BIMAP = Stream.of(DyeColor.values())
             .collect(Collectors.toMap(
                     (color) -> color,
-                    (color) -> new Identifier(LittleGuys.MOD_ID, "littleguy_entity_" + color.toString()),
+                    (color) -> Identifier.of(LittleGuys.MOD_ID, "littleguy_entity_" + color.toString()),
                     (a,b) -> a,
                     HashBiMap::create));
     public static final BiMap<DyeColor, EntityType<LittleGuyEntity>> COLOR_LITTLEGUY_BIMAP = Stream.of(DyeColor.values())

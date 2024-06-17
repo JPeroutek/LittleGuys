@@ -30,9 +30,4 @@ public class LittleHorseEntity extends AbstractHorseEntity {
     protected Vec3d getPassengerAttachmentPos(Entity passenger, EntityDimensions dimensions, float scaleFactor) {
         return Entity.getPassengerAttachmentPos(this, passenger, dimensions.attachments()).add(new Vec3d(0.0, (0.15 * (double)this.lastAngryAnimationProgress * (double)scaleFactor) - 0.15, -0.15 * (double)this.lastAngryAnimationProgress * (double)scaleFactor).rotateY(-this.getYaw() * ((float)Math.PI / 180)));
     }
-
-    @Override
-    public EntityView method_48926() {
-        return null;
-    }
 }

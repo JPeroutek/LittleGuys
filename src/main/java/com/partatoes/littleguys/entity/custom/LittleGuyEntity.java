@@ -1,6 +1,5 @@
 package com.partatoes.littleguys.entity.custom;
 
-import com.partatoes.littleguys.entity.ModEntities;
 import com.partatoes.littleguys.entity.goal.BoardLittleHorseGoal;
 import com.partatoes.littleguys.item.ModItems;
 import net.minecraft.entity.*;
@@ -16,6 +15,7 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -41,7 +41,7 @@ public class LittleGuyEntity extends PathAwareEntity {
         this.goalSelector.add(2, new BoardLittleHorseGoal(this));
         this.goalSelector.add(3, new WanderAroundGoal(this, .3));
 
-        this.targetSelector.add(0, new RevengeGoal(this, new Class[0]));
+        this.targetSelector.add(0, new RevengeGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<LittleGuyEntity>(this, LittleGuyEntity.class, 1, true, true, this::canLittleGuyAttackTarget));
     }
 
@@ -55,13 +55,15 @@ public class LittleGuyEntity extends PathAwareEntity {
         if (color == DyeColor.WHITE) {
             return new float[]{0.9019608F, 0.9019608F, 0.9019608F};
         } else {
-            float[] fs = color.getColorComponents();
-            float f = 0.75F;
-            return new float[]{fs[0] * 0.75F, fs[1] * 0.75F, fs[2] * 0.75F};
+            int colorInt = color.getEntityColor();
+            float colorScaler = 0.75f;
+
+            return new float[]{
+                    ColorHelper.Argb.getRed(colorInt) * colorScaler,
+                    ColorHelper.Argb.getGreen(colorInt) * colorScaler,
+                    ColorHelper.Argb.getBlue(colorInt) * colorScaler
+            };
         }
-    }
-    public static float[] getRgbColor(DyeColor dyeColor) {
-        return COLORS.get(dyeColor);
     }
 
     @Override
@@ -71,11 +73,11 @@ public class LittleGuyEntity extends PathAwareEntity {
     }
 
     public DyeColor getColor() {
-        return DyeColor.byId((Byte)this.dataTracker.get(COLOR) & 15);
+        return DyeColor.byId(this.dataTracker.get(COLOR) & 15);
     }
 
     public void setColor(DyeColor color) {
-        byte b = (Byte)this.dataTracker.get(COLOR);
+        byte b = this.dataTracker.get(COLOR);
         this.dataTracker.set(COLOR, (byte)(b & 240 | color.getId() & 15));
     }
 
