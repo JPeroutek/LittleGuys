@@ -8,6 +8,24 @@ jobs:
       contents: write
     runs-on: ubuntu-22.04
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: 21
+
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew clean build
+
       - uses: Kir-Antipov/mc-publish@v3.3
         with:
           # Only include this section if you wish to publish
