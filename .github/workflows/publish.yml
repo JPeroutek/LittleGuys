@@ -30,8 +30,8 @@ jobs:
         with:
           # Only include this section if you wish to publish
           # your assets on Modrinth.
-          #modrinth-id: of19plFw
-          #modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          modrinth-id: of19plFw
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # Only include this section if you wish to publish
           # your assets on CurseForge.
