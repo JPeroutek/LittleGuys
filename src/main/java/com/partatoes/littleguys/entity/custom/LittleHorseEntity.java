@@ -23,7 +23,7 @@ public class LittleHorseEntity extends AbstractHorseEntity {
     public static DefaultAttributeContainer.Builder createLittleHorseAttributes() {
         return MobEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 6)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 1);
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, .5);
     }
 
     @Override
