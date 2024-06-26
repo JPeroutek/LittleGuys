@@ -25,9 +25,13 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.partatoes.littleguys.entity.ModEntities.COLOR_LITTLEGUY_BIMAP;
+import static com.partatoes.littleguys.entity.ModEntities.LITTLEGUY_ENTITY;
+
 public class LittleGuyEntity extends PathAwareEntity {
 
     private static final TrackedData<Byte> COLOR;
+    private static final TrackedData<Boolean> IS_NEUTRAL;
     private static final Map<DyeColor, float[]> COLORS;
 
     public LittleGuyEntity(EntityType<? extends LittleGuyEntity> entityType, World world) {
@@ -69,16 +73,25 @@ public class LittleGuyEntity extends PathAwareEntity {
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(COLOR, (byte) 0);
+        builder.add(COLOR, (byte) COLOR_LITTLEGUY_BIMAP.inverse().getOrDefault(this.getType(), DyeColor.WHITE).getId());
+        builder.add(IS_NEUTRAL, this.getType().equals(LITTLEGUY_ENTITY));
     }
 
     public DyeColor getColor() {
-        return DyeColor.byId(this.dataTracker.get(COLOR) & 15);
+        return DyeColor.byId(this.dataTracker.get(COLOR));
     }
 
     public void setColor(DyeColor color) {
         byte b = this.dataTracker.get(COLOR);
-        this.dataTracker.set(COLOR, (byte)(b & 240 | color.getId() & 15));
+        this.dataTracker.set(COLOR, (byte) color.getId());
+    }
+
+    public boolean isNeutral() {
+        return this.dataTracker.get(IS_NEUTRAL);
+    }
+
+    private void setIsNeutral(Boolean isNeutral) {
+        this.dataTracker.set(IS_NEUTRAL, isNeutral);
     }
 
     @Override
@@ -90,8 +103,8 @@ public class LittleGuyEntity extends PathAwareEntity {
     }
 
     public boolean canLittleGuyAttackTarget(@Nullable LivingEntity target){
-        if (target instanceof LittleGuyEntity) {
-            return ((LittleGuyEntity) target).getColor() != this.getColor();
+        if ((target instanceof LittleGuyEntity lgTarget) && !this.isNeutral()) {
+            return !lgTarget.isNeutral() &&  (lgTarget.getColor() != this.getColor());
         }
         return false;
     }
@@ -100,18 +113,20 @@ public class LittleGuyEntity extends PathAwareEntity {
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putByte("Color", (byte) this.getColor().getId());
+        nbt.putBoolean("isNeutral", this.isNeutral());
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         this.setColor(DyeColor.byId(nbt.getByte("Color")));
+        this.setIsNeutral(nbt.getBoolean("isNeutral"));
     }
 
     @Nullable
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-        this.setColor(this.getColor());
+        this.setColor(COLOR_LITTLEGUY_BIMAP.inverse().getOrDefault(this.getType(), DyeColor.WHITE));
         return super.initialize(world, difficulty, spawnReason, entityData);
     }
 
@@ -119,5 +134,7 @@ public class LittleGuyEntity extends PathAwareEntity {
         COLOR = DataTracker.registerData(LittleGuyEntity.class, TrackedDataHandlerRegistry.BYTE);
         COLORS = Arrays.stream(DyeColor.values())
                 .collect(Collectors.toMap((color) -> color, LittleGuyEntity::getDyedColor));
+
+        IS_NEUTRAL = DataTracker.registerData(LittleGuyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
 }

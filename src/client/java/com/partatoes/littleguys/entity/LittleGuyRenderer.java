@@ -113,7 +113,8 @@ public class LittleGuyRenderer extends BipedEntityRenderer<LittleGuyEntity, Litt
         if (renderLayer != null) {
             VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(renderLayer);
             int q = LivingEntityRenderer.getOverlay(mobEntity, this.getAnimationCounter(mobEntity, g));
-            int renderColor = mobEntity.getColor().getEntityColor();
+
+            int renderColor = mobEntity.isNeutral() ? ColorHelper.Argb.fromFloats(0, 0, 0, 0) :mobEntity.getColor().getEntityColor();
 
             ((Model) this.model).render(matrixStack, vertexConsumer, i, q, renderColor);
 //            ((Model)this.model).render(
