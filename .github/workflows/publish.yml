@@ -23,8 +23,14 @@ jobs:
         if: ${{ runner.os != 'Windows' }}
         run: chmod +x ./gradlew
 
+      - name: Clean
+        run: ./gradlew clean
+
+      - name: DataGen
+        run: ./gradlew runDatagen
+
       - name: Build
-        run: ./gradlew clean runDatagen build
+        run: ./gradlew build
 
       - uses: Kir-Antipov/mc-publish@v3.3
         with:
