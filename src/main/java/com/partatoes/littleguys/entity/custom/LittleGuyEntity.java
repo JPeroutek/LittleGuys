@@ -97,7 +97,12 @@ public class LittleGuyEntity extends PathAwareEntity {
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
-        Item drop = ModItems.LITTLEGUY_COLORS.getOrDefault(this.getColor(), ModItems.LITTLEGUY_ITEM);
+        Item drop;
+        if (isNeutral()) {
+            drop = ModItems.LITTLEGUY_ITEM;
+        } else {
+            drop = ModItems.LITTLEGUY_COLORS.getOrDefault(this.getColor(), ModItems.LITTLEGUY_ITEM);
+        }
 
         this.dropItem(drop);
     }
