@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "little-guys:soulsand_pile"
-    }
+    "#": "little-guys:soulsand_pile"
   },
   "pattern": [
     "##",

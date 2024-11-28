@@ -19,7 +19,6 @@ import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -60,7 +59,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         }
         BlockPos blockPos2 = blockState.getCollisionShape(world, blockPos).isEmpty() ? blockPos : blockPos.offset(direction);
         entityType = this.getEntityType(itemStack);
-        if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, context.getPlayer(), blockPos2, SpawnReason.SPAWN_EGG, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP) != null) {
+        if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, context.getPlayer(), blockPos2, SpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP) != null) {
             itemStack.decrement(1);
             world.emitGameEvent((Entity)context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
         }
@@ -68,34 +67,33 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+    public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
         BlockHitResult blockHitResult = SpawnEggItem.raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
         if (blockHitResult.getType() != HitResult.Type.BLOCK) {
-            return TypedActionResult.pass(itemStack);
+            return ActionResult.PASS;
         }
         if (!(world instanceof ServerWorld)) {
-            return TypedActionResult.success(itemStack);
+            return ActionResult.SUCCESS;
         }
-        BlockHitResult blockHitResult2 = blockHitResult;
-        BlockPos blockPos = blockHitResult2.getBlockPos();
+        BlockPos blockPos = blockHitResult.getBlockPos();
         if (!(world.getBlockState(blockPos).getBlock() instanceof FluidBlock)) {
-            return TypedActionResult.pass(itemStack);
+            return ActionResult.PASS;
         }
-        if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, blockHitResult2.getSide(), itemStack)) {
-            return TypedActionResult.fail(itemStack);
+        if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
+            return ActionResult.FAIL;
         }
         EntityType<?> entityType = this.getEntityType(itemStack);
-        LittleGuyEntity entity = (LittleGuyEntity) entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos, SpawnReason.SPAWN_EGG, false, false);
+        LittleGuyEntity entity = (LittleGuyEntity) entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos, SpawnReason.SPAWN_ITEM_USE, false, false);
 
         if (entity == null) {
-            return TypedActionResult.pass(itemStack);
+            return ActionResult.PASS;
         } else {
             entity.setColor(this.color);
         }
         itemStack.decrementUnlessCreative(1, user);
         user.incrementStat(Stats.USED.getOrCreateStat(this));
         world.emitGameEvent((Entity)user, GameEvent.ENTITY_PLACE, ((Entity)entity).getPos());
-        return TypedActionResult.consume(itemStack);
+        return ActionResult.CONSUME;
     }
 }

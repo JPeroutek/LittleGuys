@@ -14,11 +14,13 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -51,9 +53,9 @@ public class LittleGuyEntity extends PathAwareEntity {
 
     public static DefaultAttributeContainer.Builder createLittleGuyAttributes() {
         return MobEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 6)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, .35)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, .5);
+                .add(EntityAttributes.MAX_HEALTH, 6)
+                .add(EntityAttributes.MOVEMENT_SPEED, .35)
+                .add(EntityAttributes.ATTACK_DAMAGE, .5);
     }
     private static float[] getDyedColor(DyeColor color) {
         if (color == DyeColor.WHITE) {
@@ -63,9 +65,9 @@ public class LittleGuyEntity extends PathAwareEntity {
             float colorScaler = 0.75f;
 
             return new float[]{
-                    ColorHelper.Argb.getRed(colorInt) * colorScaler,
-                    ColorHelper.Argb.getGreen(colorInt) * colorScaler,
-                    ColorHelper.Argb.getBlue(colorInt) * colorScaler
+                    ColorHelper.getRed(colorInt) * colorScaler,
+                    ColorHelper.getGreen(colorInt) * colorScaler,
+                    ColorHelper.getBlue(colorInt) * colorScaler
             };
         }
     }
@@ -104,10 +106,13 @@ public class LittleGuyEntity extends PathAwareEntity {
             drop = ModItems.LITTLEGUY_COLORS.getOrDefault(this.getColor(), ModItems.LITTLEGUY_ITEM);
         }
 
-        this.dropItem(drop);
+        World w = this.getWorld();
+        if (w instanceof ServerWorld serverWorld) {
+            this.dropItem(serverWorld, drop);
+        }
     }
 
-    public boolean canLittleGuyAttackTarget(@Nullable LivingEntity target){
+    public boolean canLittleGuyAttackTarget(@Nullable LivingEntity target, ServerWorld serverWorld){
         if ((target instanceof LittleGuyEntity lgTarget) && !this.isNeutral()) {
             return !lgTarget.isNeutral() &&  (lgTarget.getColor() != this.getColor());
         }

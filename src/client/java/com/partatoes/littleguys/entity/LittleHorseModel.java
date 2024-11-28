@@ -5,11 +5,12 @@ import com.partatoes.littleguys.entity.custom.LittleHorseEntity;
 import net.minecraft.client.model.Dilation;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.TexturedModelData;
+import net.minecraft.client.render.entity.model.AbstractHorseEntityModel;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.HorseEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 
-public class LittleHorseModel<T extends LittleHorseEntity> extends HorseEntityModel<T> {
+public class LittleHorseModel<T extends LittleHorseEntityRenderState> extends AbstractHorseEntityModel<T> {
     public LittleHorseModel(ModelPart root) {
         super(root);
     }

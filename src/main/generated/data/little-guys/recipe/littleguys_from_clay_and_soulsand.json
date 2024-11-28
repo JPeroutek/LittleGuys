@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "C": {
-      "item": "minecraft:clay"
-    },
-    "S": {
-      "item": "minecraft:soul_sand"
-    }
+    "C": "minecraft:clay",
+    "S": "minecraft:soul_sand"
   },
   "pattern": [
     "S",
