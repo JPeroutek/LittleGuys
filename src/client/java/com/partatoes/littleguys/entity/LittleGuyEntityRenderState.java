@@ -5,4 +5,5 @@ import net.minecraft.util.DyeColor;
 
 public class LittleGuyEntityRenderState extends BipedEntityRenderState {
     DyeColor color;
+    boolean isNeutral;
 }

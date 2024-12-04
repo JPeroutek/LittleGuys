@@ -6,7 +6,9 @@ import net.minecraft.client.render.entity.AbstractHorseEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 
 public class LittleHorseRenderer extends AbstractHorseEntityRenderer<LittleHorseEntity, LittleHorseEntityRenderState, LittleHorseModel<LittleHorseEntityRenderState>> {
     public LittleHorseRenderer(EntityRendererFactory.Context ctx) {
@@ -31,6 +33,11 @@ public class LittleHorseRenderer extends AbstractHorseEntityRenderer<LittleHorse
 
     @Override
     public Identifier getTexture(LittleHorseEntityRenderState state) {
-        return Identifier.ofVanilla("textures/block/clay.png");
+        return Identifier.ofVanilla("textures/block/white_concrete_powder.png");
+    }
+
+    @Override
+    protected int getMixColor(LittleHorseEntityRenderState state) {
+        return ColorHelper.mix(ColorHelper.mix(DyeColor.LIGHT_GRAY.getEntityColor(), DyeColor.WHITE.getEntityColor()), DyeColor.WHITE.getEntityColor());
     }
 }
