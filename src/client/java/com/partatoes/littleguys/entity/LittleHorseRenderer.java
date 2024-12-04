@@ -3,12 +3,8 @@ package com.partatoes.littleguys.entity;
 import com.partatoes.littleguys.entity.custom.LittleHorseEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.AbstractHorseEntityRenderer;
-import net.minecraft.client.render.entity.BipedEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.render.entity.state.LivingHorseEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
