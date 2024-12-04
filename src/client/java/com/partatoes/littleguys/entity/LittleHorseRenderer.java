@@ -20,7 +20,6 @@ public class LittleHorseRenderer extends AbstractHorseEntityRenderer<LittleHorse
     @Override
     public LittleHorseEntityRenderState createRenderState() {
         return new LittleHorseEntityRenderState();
-//        return null;
     }
 
     private static LittleHorseModel<LittleHorseEntityRenderState> createModel(EntityRendererFactory.Context ctx) {
@@ -28,17 +27,6 @@ public class LittleHorseRenderer extends AbstractHorseEntityRenderer<LittleHorse
         ModelPart modelPart = ctx.getPart(entityModelLayer);
         return new LittleHorseModel<>(modelPart);
     }
-
-//    @Override
-//    protected void scale(LittleHorseEntity entity, MatrixStack matrices, float amount) {
-//        matrices.scale(.3f,.3f,.3f);
-//    }
-
-//    @Override
-//    protected void scale(LivingEntityRenderState state, MatrixStack matrices) {
-//        matrices.scale(.3f,.3f,.3f);
-//    }
-
 
     @Override
     protected void scale(LittleHorseEntityRenderState livingHorseEntityRenderState, MatrixStack matrixStack) {

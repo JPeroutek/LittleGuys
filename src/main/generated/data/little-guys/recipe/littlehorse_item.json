@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "c": "minecraft:clay_ball",
+    "d": "minecraft:saddle",
+    "s": "little-guys:soulsand_pile"
+  },
+  "pattern": [
+    "s  ",
+    "cdc",
+    "c c"
+  ],
+  "result": {
+    "count": 1,
+    "id": "little-guys:littlehorse_item"
+  }
+}
