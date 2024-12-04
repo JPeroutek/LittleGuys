@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "little-guys:item/littleguy_item",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -425955
+      }
+    ]
+  }
+}

@@ -34,16 +34,12 @@ public class ModItems {
     public static final Item LITTLEGUY_ITEM = registerItem(
             LITTLEGUY_ITEM_ID,
             new SpawnEggItem(ModEntities.LITTLEGUY_ENTITY,
-                    13158600,
-                    13158600,
                     createItemSettings(LITTLEGUY_ITEM_ID)));
 
     public static final Identifier LITTLEHORSE_ITEM_ID = Identifier.of(LittleGuys.MOD_ID, "littlehorse_item");
     public static final Item LITTLEHORSE_ITEM = registerItem(
             LITTLEHORSE_ITEM_ID,
             new SpawnEggItem(ModEntities.LITTLEHORSE_ENTITY,
-                    13158600,
-                    13158600,
                     createItemSettings(LITTLEHORSE_ITEM_ID)));
 
     public static final Identifier SOULSAND_PILE_ID = Identifier.of(LittleGuys.MOD_ID, "soulsand_pile");
