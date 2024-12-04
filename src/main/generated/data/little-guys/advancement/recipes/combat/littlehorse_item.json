@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "little-guys:littlehorse_from_clay_balls_and_soulsand_pile"
+        "recipe": "little-guys:littlehorse_item"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -48,7 +48,7 @@
   ],
   "rewards": {
     "recipes": [
-      "little-guys:littlehorse_from_clay_balls_and_soulsand_pile"
+      "little-guys:littlehorse_item"
     ]
   }
 }

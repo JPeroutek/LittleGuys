@@ -9,7 +9,7 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
 
-public class LittleGuyModel<T extends LittleGuyEntity> extends BipedEntityModel<T> {
+public class LittleGuyModel<T extends LittleGuyEntityRenderState> extends BipedEntityModel<T> {
     public LittleGuyModel(ModelPart root) {
         super(root);
     }
@@ -18,8 +18,4 @@ public class LittleGuyModel<T extends LittleGuyEntity> extends BipedEntityModel<
         return TexturedModelData.of(PlayerEntityModel.getTexturedModelData(Dilation.NONE, false), 16, 16);
     }
 
-    @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
-        super.render(matrices, vertices, light, overlay, color);
-    }
 }

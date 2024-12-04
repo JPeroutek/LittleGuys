@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "little-guys:littleguy_item"
-    },
-    {
-      "item": "minecraft:purple_dye"
-    }
+    "little-guys:littleguy_item",
+    "minecraft:purple_dye"
   ],
   "result": {
     "count": 1,

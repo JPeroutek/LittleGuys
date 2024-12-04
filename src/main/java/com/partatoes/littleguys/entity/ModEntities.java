@@ -9,6 +9,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -25,13 +27,13 @@ public class ModEntities {
             LITTLEGUY_ID,
             EntityType.Builder.create(LittleGuyEntity::new, SpawnGroup.MISC)
                     .dimensions(.3f, .6f)
-                    .build());
+                    .build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, LITTLEGUY_ID)));
     public static final EntityType<LittleHorseEntity> LITTLEHORSE_ENTITY = Registry.register(
             Registries.ENTITY_TYPE,
             LITTLEHORSE_ID,
             EntityType.Builder.create(LittleHorseEntity::new, SpawnGroup.MISC)
                     .dimensions(.3f, .4f)
-                    .build());
+                    .build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, LITTLEHORSE_ID)));
     public static final BiMap<DyeColor, Identifier> COLOR_LITTLEGUY_IDS_BIMAP = Stream.of(DyeColor.values())
             .collect(Collectors.toMap(
                     (color) -> color,
@@ -52,7 +54,7 @@ public class ModEntities {
                                             return lg;
                                         }, SpawnGroup.MISC)
                                     .dimensions(.3f, .6f)
-                                    .build());
+                                    .build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, COLOR_LITTLEGUY_IDS_BIMAP.get(color))));
                     },
                     (a,b) -> a,
                     HashBiMap::create));

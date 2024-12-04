@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "c": {
-      "item": "minecraft:clay_ball"
-    },
-    "s": {
-      "item": "little-guys:soulsand_pile"
-    }
+    "c": "minecraft:clay_ball",
+    "s": "little-guys:soulsand_pile"
   },
   "pattern": [
     "s",
