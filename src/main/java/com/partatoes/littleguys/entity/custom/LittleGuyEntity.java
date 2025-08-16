@@ -16,16 +16,10 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.partatoes.littleguys.entity.ModEntities.COLOR_LITTLEGUY_BIMAP;
 import static com.partatoes.littleguys.entity.ModEntities.LITTLEGUY_ENTITY;
@@ -34,7 +28,6 @@ public class LittleGuyEntity extends PathAwareEntity {
 
     private static final TrackedData<Byte> COLOR;
     private static final TrackedData<Boolean> IS_NEUTRAL;
-    private static final Map<DyeColor, float[]> COLORS;
 
     public LittleGuyEntity(EntityType<? extends LittleGuyEntity> entityType, World world) {
         super(entityType, world);
@@ -48,7 +41,7 @@ public class LittleGuyEntity extends PathAwareEntity {
         this.goalSelector.add(3, new WanderAroundGoal(this, .3));
 
         this.targetSelector.add(0, new RevengeGoal(this));
-        this.targetSelector.add(1, new ActiveTargetGoal<LittleGuyEntity>(this, LittleGuyEntity.class, 1, true, true, this::canLittleGuyAttackTarget));
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, LittleGuyEntity.class, 1, true, true, this::canLittleGuyAttackTarget));
     }
 
     public static DefaultAttributeContainer.Builder createLittleGuyAttributes() {
@@ -57,35 +50,36 @@ public class LittleGuyEntity extends PathAwareEntity {
                 .add(EntityAttributes.MOVEMENT_SPEED, .35)
                 .add(EntityAttributes.ATTACK_DAMAGE, .5);
     }
-    private static float[] getDyedColor(DyeColor color) {
-        if (color == DyeColor.WHITE) {
-            return new float[]{0.9019608F, 0.9019608F, 0.9019608F};
-        } else {
-            int colorInt = color.getEntityColor();
-            float colorScaler = 0.75f;
 
-            return new float[]{
-                    ColorHelper.getRed(colorInt) * colorScaler,
-                    ColorHelper.getGreen(colorInt) * colorScaler,
-                    ColorHelper.getBlue(colorInt) * colorScaler
-            };
-        }
-    }
+    // Required for previous versions, likely to be removed in the future
+//    private static float[] getDyedColor(DyeColor color) {
+//        if (color == DyeColor.WHITE) {
+//            return new float[]{0.9019608F, 0.9019608F, 0.9019608F};
+//        } else {
+//            int colorInt = color.getEntityColor();
+//            float colorScaler = 0.75f;
+//
+//            return new float[]{
+//                    ColorHelper.getRed(colorInt) * colorScaler,
+//                    ColorHelper.getGreen(colorInt) * colorScaler,
+//                    ColorHelper.getBlue(colorInt) * colorScaler
+//            };
+//        }
+//    }
 
     @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
-        builder.add(COLOR, (byte) COLOR_LITTLEGUY_BIMAP.inverse().getOrDefault(this.getType(), DyeColor.WHITE).getId());
+        builder.add(COLOR, (byte) COLOR_LITTLEGUY_BIMAP.inverse().getOrDefault(this.getType(), DyeColor.WHITE).getIndex());
         builder.add(IS_NEUTRAL, this.getType().equals(LITTLEGUY_ENTITY));
     }
 
     public DyeColor getColor() {
-        return DyeColor.byId(this.dataTracker.get(COLOR));
+        return DyeColor.byIndex(this.dataTracker.get(COLOR));
     }
 
     public void setColor(DyeColor color) {
-        byte b = this.dataTracker.get(COLOR);
-        this.dataTracker.set(COLOR, (byte) color.getId());
+        this.dataTracker.set(COLOR, (byte) color.getIndex());
     }
 
     public boolean isNeutral() {
@@ -122,15 +116,15 @@ public class LittleGuyEntity extends PathAwareEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putByte("Color", (byte) this.getColor().getId());
+        nbt.putString("Color", this.getColor().getId());
         nbt.putBoolean("isNeutral", this.isNeutral());
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.setColor(DyeColor.byId(nbt.getByte("Color")));
-        this.setIsNeutral(nbt.getBoolean("isNeutral"));
+        this.setColor(DyeColor.byId(nbt.getString("Color").orElse("White"), DyeColor.WHITE));
+        this.setIsNeutral(nbt.getBoolean("isNeutral").orElse(true));
     }
 
     @Nullable
@@ -142,8 +136,6 @@ public class LittleGuyEntity extends PathAwareEntity {
 
     static {
         COLOR = DataTracker.registerData(LittleGuyEntity.class, TrackedDataHandlerRegistry.BYTE);
-        COLORS = Arrays.stream(DyeColor.values())
-                .collect(Collectors.toMap((color) -> color, LittleGuyEntity::getDyedColor));
 
         IS_NEUTRAL = DataTracker.registerData(LittleGuyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     }
