@@ -10,6 +10,8 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPointer;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.event.GameEvent;
@@ -19,7 +21,7 @@ public class ModDispenserBehavior {
         @Override
         public ItemStack dispenseSilently(BlockPointer pointer, ItemStack stack) {
             Direction direction = pointer.state().get(DispenserBlock.FACING);
-            EntityType<?> entityType = ((SpawnEggItem)stack.getItem()).getEntityType(stack);
+            EntityType<?> entityType = ((SpawnEggItem)stack.getItem()).getEntityType(pointer.world().getRegistryManager(), stack);
             try {
                 entityType.spawnFromItemStack(pointer.world(), stack, null, pointer.pos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
             } catch (Exception exception) {

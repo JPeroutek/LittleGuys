@@ -12,7 +12,7 @@ import net.minecraft.util.math.ColorHelper;
 
 public class LittleHorseRenderer extends AbstractHorseEntityRenderer<LittleHorseEntity, LittleHorseEntityRenderState, LittleHorseModel<LittleHorseEntityRenderState>> {
     public LittleHorseRenderer(EntityRendererFactory.Context ctx) {
-        super(ctx, createModel(ctx), createModel(ctx), .25f);
+        super(ctx, createModel(ctx), createModel(ctx));
     }
 
     @Override

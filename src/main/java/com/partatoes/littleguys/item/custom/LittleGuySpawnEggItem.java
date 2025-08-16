@@ -32,7 +32,7 @@ import java.util.Objects;
 public class LittleGuySpawnEggItem extends SpawnEggItem {
     private final DyeColor color;
     public LittleGuySpawnEggItem(EntityType<? extends MobEntity> type, DyeColor color, Settings settings) {
-        super(type, 0, 0, settings);
+        super(type, settings);
         this.color = color;
     }
 
@@ -50,7 +50,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         BlockEntity blockEntity = world.getBlockEntity(blockPos);
         if (blockEntity instanceof Spawner) {
             Spawner spawner = (Spawner)((Object)blockEntity);
-            entityType = this.getEntityType(itemStack);
+            entityType = this.getEntityType(world.getRegistryManager(),itemStack);
             spawner.setEntityType(entityType, world.getRandom());
             world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
             world.emitGameEvent((Entity)context.getPlayer(), GameEvent.BLOCK_CHANGE, blockPos);
@@ -58,7 +58,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
             return ActionResult.CONSUME;
         }
         BlockPos blockPos2 = blockState.getCollisionShape(world, blockPos).isEmpty() ? blockPos : blockPos.offset(direction);
-        entityType = this.getEntityType(itemStack);
+        entityType = this.getEntityType(world.getRegistryManager(), itemStack);
         if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, context.getPlayer(), blockPos2, SpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP) != null) {
             itemStack.decrement(1);
             world.emitGameEvent((Entity)context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
@@ -83,7 +83,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
             return ActionResult.FAIL;
         }
-        EntityType<?> entityType = this.getEntityType(itemStack);
+        EntityType<?> entityType = this.getEntityType(world.getRegistryManager(), itemStack);
         LittleGuyEntity entity = (LittleGuyEntity) entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos, SpawnReason.SPAWN_ITEM_USE, false, false);
 
         if (entity == null) {

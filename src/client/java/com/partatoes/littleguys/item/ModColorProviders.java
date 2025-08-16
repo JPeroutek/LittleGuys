@@ -9,7 +9,7 @@ public class ModColorProviders {
         LittleGuys.LOGGER.info("Registering Color Providers for " + LittleGuys.MOD_ID);
 
         for (Item x : ModItems.LITTLEGUY_COLORS.values()) {
-            ColorProviderRegistry.ITEM.register(new LittleGuyItemColorProvider(), x);
+//            ColorProviderRegistry.ITEM.register(new LittleGuyItemColorProvider(), x);
         }
     }
 }
