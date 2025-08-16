@@ -6,7 +6,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.Spawner;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
@@ -49,11 +48,11 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         BlockState blockState = world.getBlockState(blockPos);
         BlockEntity blockEntity = world.getBlockEntity(blockPos);
         if (blockEntity instanceof Spawner) {
-            Spawner spawner = (Spawner)((Object)blockEntity);
+            Spawner spawner = (Spawner)(blockEntity);
             entityType = this.getEntityType(world.getRegistryManager(),itemStack);
             spawner.setEntityType(entityType, world.getRandom());
             world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
-            world.emitGameEvent((Entity)context.getPlayer(), GameEvent.BLOCK_CHANGE, blockPos);
+            world.emitGameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, blockPos);
             itemStack.decrement(1);
             return ActionResult.CONSUME;
         }
@@ -61,7 +60,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         entityType = this.getEntityType(world.getRegistryManager(), itemStack);
         if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, context.getPlayer(), blockPos2, SpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP) != null) {
             itemStack.decrement(1);
-            world.emitGameEvent((Entity)context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
+            world.emitGameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
         }
         return ActionResult.CONSUME;
     }
@@ -80,7 +79,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         if (!(world.getBlockState(blockPos).getBlock() instanceof FluidBlock)) {
             return ActionResult.PASS;
         }
-        if (!world.canPlayerModifyAt(user, blockPos) || !user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
+        if (world.canEntityModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
             return ActionResult.FAIL;
         }
         EntityType<?> entityType = this.getEntityType(world.getRegistryManager(), itemStack);
@@ -93,7 +92,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         }
         itemStack.decrementUnlessCreative(1, user);
         user.incrementStat(Stats.USED.getOrCreateStat(this));
-        world.emitGameEvent((Entity)user, GameEvent.ENTITY_PLACE, ((Entity)entity).getPos());
+        world.emitGameEvent(user, GameEvent.ENTITY_PLACE, (entity).getPos());
         return ActionResult.CONSUME;
     }
 }
