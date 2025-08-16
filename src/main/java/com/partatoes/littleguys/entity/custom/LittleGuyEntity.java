@@ -13,8 +13,9 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -114,17 +115,17 @@ public class LittleGuyEntity extends PathAwareEntity {
     }
 
     @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        nbt.putString("Color", this.getColor().getId());
-        nbt.putBoolean("isNeutral", this.isNeutral());
+    public void writeCustomData(WriteView view) {
+        super.writeCustomData(view);
+        view.putString("Color", this.getColor().getId());
+        view.putBoolean("isNeutral", this.isNeutral());
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        this.setColor(DyeColor.byId(nbt.getString("Color").orElse("White"), DyeColor.WHITE));
-        this.setIsNeutral(nbt.getBoolean("isNeutral").orElse(true));
+    public void readCustomData(ReadView view) {
+        super.readCustomData(view);
+        this.setColor(DyeColor.byId(view.getString("Color", "White"), DyeColor.WHITE));
+        this.setIsNeutral(view.getBoolean("isNeutral", true));
     }
 
     @Nullable
