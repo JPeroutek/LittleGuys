@@ -30,13 +30,7 @@ public class ModDispenserBehavior {
                                 littleGuyEntity.setColor(eggItem.color);
                                 littleGuyEntity.setIsNeutral(false);
                             }
-                        } //else {
-//
-//                        }
-//                        if (stack.getItem() instanceof LittleGuySpawnEggItem eggItem) {
-//                            entity.setColor(eggItem.color);
-//                            entity.setIsNeutral(false);
-//                        }
+                        }
                     }
                 }
 
