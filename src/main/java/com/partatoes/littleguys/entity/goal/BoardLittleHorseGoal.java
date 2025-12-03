@@ -17,7 +17,7 @@ public class BoardLittleHorseGoal extends Goal {
 
     @Override
     public boolean canStart() {
-        List<LittleHorseEntity> littleHorsesList = this.mob.getWorld().getNonSpectatingEntities(LittleHorseEntity.class, this.mob.getBoundingBox().expand(5.0));
+        List<LittleHorseEntity> littleHorsesList = this.mob.getEntityWorld().getNonSpectatingEntities(LittleHorseEntity.class, this.mob.getBoundingBox().expand(5.0));
         boolean ret = false;
         for (LittleHorseEntity horse : littleHorsesList) {
             Entity entity = horse.getControllingPassenger();
@@ -27,11 +27,6 @@ public class BoardLittleHorseGoal extends Goal {
             }
         }
         return ret && !this.mob.hasVehicle();
-    }
-
-    @Override
-    public boolean canStop() {
-        return true;
     }
 
     @Override
