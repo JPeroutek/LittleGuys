@@ -2,15 +2,11 @@ package com.partatoes.littleguys.item;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Maps;
 import com.partatoes.littleguys.LittleGuys;
 import com.partatoes.littleguys.entity.ModEntities;
-import com.partatoes.littleguys.entity.custom.LittleGuyEntity;
 import com.partatoes.littleguys.item.custom.LittleGuySpawnEggItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.DyedColorComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -23,9 +19,6 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,7 +42,7 @@ public class ModItems {
     public static final BiMap<DyeColor, Item> LITTLEGUY_COLORS = Stream.of(DyeColor.values())
             .collect(Collectors.toMap(
                 (color) -> color,
-                (color) -> registerItem(createLittleGuyColorId((DyeColor) color), new LittleGuySpawnEggItem(color, createSpawnEggItemSettings(createLittleGuyColorId(color), ModEntities.LITTLEGUY_ENTITY))),
+                (color) -> registerItem(createLittleGuyColorId(color), new LittleGuySpawnEggItem(color, createSpawnEggItemSettings(createLittleGuyColorId(color), ModEntities.LITTLEGUY_ENTITY))),
                 (a, b) -> a,
                 HashBiMap::create));
 

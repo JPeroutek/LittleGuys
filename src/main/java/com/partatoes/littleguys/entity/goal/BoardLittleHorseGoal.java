@@ -30,11 +30,6 @@ public class BoardLittleHorseGoal extends Goal {
     }
 
     @Override
-    public boolean canStop() {
-        return true;
-    }
-
-    @Override
     public void stop() {
         this.target = null;
         this.mob.getNavigation().stop();
