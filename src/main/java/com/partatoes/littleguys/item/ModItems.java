@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.DyedColorComponent;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.SpawnEggItem;
@@ -33,14 +34,14 @@ public class ModItems {
     public static final Identifier LITTLEGUY_ITEM_ID = Identifier.of(LittleGuys.MOD_ID, "littleguy_item");
     public static final Item LITTLEGUY_ITEM = registerItem(
             LITTLEGUY_ITEM_ID,
-            new SpawnEggItem(ModEntities.LITTLEGUY_ENTITY,
-                    createItemSettings(LITTLEGUY_ITEM_ID)));
+            new SpawnEggItem(
+                    createSpawnEggItemSettings(LITTLEGUY_ITEM_ID, ModEntities.LITTLEGUY_ENTITY)));
 
     public static final Identifier LITTLEHORSE_ITEM_ID = Identifier.of(LittleGuys.MOD_ID, "littlehorse_item");
     public static final Item LITTLEHORSE_ITEM = registerItem(
             LITTLEHORSE_ITEM_ID,
-            new SpawnEggItem(ModEntities.LITTLEHORSE_ENTITY,
-                    createItemSettings(LITTLEHORSE_ITEM_ID)));
+            new SpawnEggItem(
+                    createSpawnEggItemSettings(LITTLEHORSE_ITEM_ID, ModEntities.LITTLEHORSE_ENTITY)));
 
     public static final Identifier SOULSAND_PILE_ID = Identifier.of(LittleGuys.MOD_ID, "soulsand_pile");
     public static final Item SOULSAND_PILE_ITEM = registerItem(SOULSAND_PILE_ID, new Item(createItemSettings(SOULSAND_PILE_ID)));
@@ -48,7 +49,7 @@ public class ModItems {
     public static final BiMap<DyeColor, Item> LITTLEGUY_COLORS = Stream.of(DyeColor.values())
             .collect(Collectors.toMap(
                 (color) -> color,
-                (color) -> registerItem(createLittleGuyColorId((DyeColor) color), new LittleGuySpawnEggItem(ModEntities.COLOR_LITTLEGUY_BIMAP.get(color), color, createItemSettings(createLittleGuyColorId(color)))),
+                (color) -> registerItem(createLittleGuyColorId((DyeColor) color), new LittleGuySpawnEggItem(color, createSpawnEggItemSettings(createLittleGuyColorId(color), ModEntities.LITTLEGUY_ENTITY))),
                 (a, b) -> a,
                 HashBiMap::create));
 
@@ -67,6 +68,10 @@ public class ModItems {
 
     private static Item.Settings createItemSettings(Identifier id) {
         return new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, id));
+    }
+
+    private static Item.Settings createSpawnEggItemSettings(Identifier id, EntityType<?> et) {
+        return new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, id)).spawnEgg(et);
     }
 
     private static void addItemsToIngredientTabItemGroup(FabricItemGroupEntries entries) {

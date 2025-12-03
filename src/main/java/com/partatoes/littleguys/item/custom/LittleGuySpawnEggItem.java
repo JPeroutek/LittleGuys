@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.Spawner;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
@@ -29,9 +30,9 @@ import net.minecraft.world.event.GameEvent;
 import java.util.Objects;
 
 public class LittleGuySpawnEggItem extends SpawnEggItem {
-    private final DyeColor color;
-    public LittleGuySpawnEggItem(EntityType<? extends MobEntity> type, DyeColor color, Settings settings) {
-        super(type, settings);
+    public final DyeColor color;
+    public LittleGuySpawnEggItem(DyeColor color, Settings settings) {
+        super(settings);
         this.color = color;
     }
 
@@ -49,7 +50,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         BlockEntity blockEntity = world.getBlockEntity(blockPos);
         if (blockEntity instanceof Spawner) {
             Spawner spawner = (Spawner)(blockEntity);
-            entityType = this.getEntityType(world.getRegistryManager(),itemStack);
+            entityType = this.getEntityType(itemStack);
             spawner.setEntityType(entityType, world.getRandom());
             world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
             world.emitGameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, blockPos);
@@ -57,10 +58,13 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
             return ActionResult.CONSUME;
         }
         BlockPos blockPos2 = blockState.getCollisionShape(world, blockPos).isEmpty() ? blockPos : blockPos.offset(direction);
-        entityType = this.getEntityType(world.getRegistryManager(), itemStack);
-        if (entityType.spawnFromItemStack((ServerWorld)world, itemStack, context.getPlayer(), blockPos2, SpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP) != null) {
+        entityType = this.getEntityType(itemStack);
+        LittleGuyEntity entity = (LittleGuyEntity) entityType.spawnFromItemStack((ServerWorld) world, itemStack, context.getPlayer(), blockPos2, SpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP);
+        if (entity != null) {
             itemStack.decrement(1);
             world.emitGameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
+            entity.setColor(this.color);
+            entity.setIsNeutral(false);
         }
         return ActionResult.CONSUME;
     }
@@ -82,7 +86,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         if (world.canEntityModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
             return ActionResult.FAIL;
         }
-        EntityType<?> entityType = this.getEntityType(world.getRegistryManager(), itemStack);
+        EntityType<?> entityType = this.getEntityType(itemStack);
         LittleGuyEntity entity = (LittleGuyEntity) entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos, SpawnReason.SPAWN_ITEM_USE, false, false);
 
         if (entity == null) {
@@ -92,7 +96,7 @@ public class LittleGuySpawnEggItem extends SpawnEggItem {
         }
         itemStack.decrementUnlessCreative(1, user);
         user.incrementStat(Stats.USED.getOrCreateStat(this));
-        world.emitGameEvent(user, GameEvent.ENTITY_PLACE, (entity).getPos());
+        world.emitGameEvent(user, GameEvent.ENTITY_PLACE, (entity).getEntityPos());
         return ActionResult.CONSUME;
     }
 }

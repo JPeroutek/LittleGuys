@@ -87,7 +87,7 @@ public class LittleGuyEntity extends PathAwareEntity {
         return this.dataTracker.get(IS_NEUTRAL);
     }
 
-    private void setIsNeutral(Boolean isNeutral) {
+    public void setIsNeutral(Boolean isNeutral) {
         this.dataTracker.set(IS_NEUTRAL, isNeutral);
     }
 
@@ -101,7 +101,7 @@ public class LittleGuyEntity extends PathAwareEntity {
             drop = ModItems.LITTLEGUY_COLORS.getOrDefault(this.getColor(), ModItems.LITTLEGUY_ITEM);
         }
 
-        World w = this.getWorld();
+        World w = this.getEntityWorld();
         if (w instanceof ServerWorld serverWorld) {
             this.dropItem(serverWorld, drop);
         }
