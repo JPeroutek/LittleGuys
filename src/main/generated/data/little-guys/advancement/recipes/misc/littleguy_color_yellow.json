@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "little-guys:littleguy_color_yellow"
+        "recipes": "little-guys:littleguy_color_yellow"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

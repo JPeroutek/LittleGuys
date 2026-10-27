@@ -33,7 +33,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "little-guys:littlehorse_item"
+        "recipes": "little-guys:littlehorse_item"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
