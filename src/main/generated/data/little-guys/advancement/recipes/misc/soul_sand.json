@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "little-guys:soul_sand"
+        "recipes": "little-guys:soul_sand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

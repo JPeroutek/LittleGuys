@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "little-guys:littleguys_from_clay_and_soulsand"
+        "recipes": "little-guys:littleguys_from_clay_and_soulsand"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

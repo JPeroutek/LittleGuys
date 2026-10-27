@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "little-guys:soulsand_pile"
+        "recipes": "little-guys:soulsand_pile"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
