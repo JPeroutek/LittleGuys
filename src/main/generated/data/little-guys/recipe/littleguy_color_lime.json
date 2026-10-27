@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     "little-guys:littleguy_item",
     "minecraft:lime_dye"
