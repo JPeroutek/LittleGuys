@@ -1,8 +1,7 @@
 package com.partatoes.littleguys.item;
 
 import com.partatoes.littleguys.LittleGuys;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.Item;
 
 public class ModColorProviders {
     public static void registerColorProviders() {

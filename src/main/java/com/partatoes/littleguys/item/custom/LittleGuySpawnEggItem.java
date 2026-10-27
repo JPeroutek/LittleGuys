@@ -1,100 +1,99 @@
 package com.partatoes.littleguys.item.custom;
 
 import com.partatoes.littleguys.entity.custom.LittleGuyEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.Spawner;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
-
 import java.util.Objects;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Spawner;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 public class LittleGuySpawnEggItem extends SpawnEggItem {
     public final DyeColor color;
-    public LittleGuySpawnEggItem(DyeColor color, Settings settings) {
+    public LittleGuySpawnEggItem(DyeColor color, Properties settings) {
         super(settings);
         this.color = color;
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
+    public InteractionResult useOn(UseOnContext context) {
         EntityType<?> entityType;
-        World world = context.getWorld();
-        if (!(world instanceof ServerWorld)) {
-            return ActionResult.SUCCESS;
+        Level world = context.getLevel();
+        if (!(world instanceof ServerLevel)) {
+            return InteractionResult.SUCCESS;
         }
-        ItemStack itemStack = context.getStack();
-        BlockPos blockPos = context.getBlockPos();
-        Direction direction = context.getSide();
+        ItemStack itemStack = context.getItemInHand();
+        BlockPos blockPos = context.getClickedPos();
+        Direction direction = context.getClickedFace();
         BlockState blockState = world.getBlockState(blockPos);
         BlockEntity blockEntity = world.getBlockEntity(blockPos);
         if (blockEntity instanceof Spawner) {
             Spawner spawner = (Spawner)(blockEntity);
-            entityType = this.getEntityType(itemStack);
-            spawner.setEntityType(entityType, world.getRandom());
-            world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
-            world.emitGameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, blockPos);
-            itemStack.decrement(1);
-            return ActionResult.CONSUME;
+            entityType = this.getType(itemStack);
+            spawner.setEntityId(entityType, world.getRandom());
+            world.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_ALL);
+            world.gameEvent(context.getPlayer(), GameEvent.BLOCK_CHANGE, blockPos);
+            itemStack.shrink(1);
+            return InteractionResult.CONSUME;
         }
-        BlockPos blockPos2 = blockState.getCollisionShape(world, blockPos).isEmpty() ? blockPos : blockPos.offset(direction);
-        entityType = this.getEntityType(itemStack);
-        LittleGuyEntity entity = (LittleGuyEntity) entityType.spawnFromItemStack((ServerWorld) world, itemStack, context.getPlayer(), blockPos2, SpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP);
+        BlockPos blockPos2 = blockState.getCollisionShape(world, blockPos).isEmpty() ? blockPos : blockPos.relative(direction);
+        entityType = this.getType(itemStack);
+        LittleGuyEntity entity = (LittleGuyEntity) entityType.spawn((ServerLevel) world, itemStack, context.getPlayer(), blockPos2, EntitySpawnReason.SPAWN_ITEM_USE, true, !Objects.equals(blockPos, blockPos2) && direction == Direction.UP);
         if (entity != null) {
-            itemStack.decrement(1);
-            world.emitGameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
+            itemStack.shrink(1);
+            world.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, blockPos);
             entity.setColor(this.color);
             entity.setIsNeutral(false);
         }
-        return ActionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        BlockHitResult blockHitResult = SpawnEggItem.raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
+    public InteractionResult use(Level world, Player user, InteractionHand hand) {
+        ItemStack itemStack = user.getItemInHand(hand);
+        BlockHitResult blockHitResult = SpawnEggItem.getPlayerPOVHitResult(world, user, ClipContext.Fluid.SOURCE_ONLY);
         if (blockHitResult.getType() != HitResult.Type.BLOCK) {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         }
-        if (!(world instanceof ServerWorld)) {
-            return ActionResult.SUCCESS;
+        if (!(world instanceof ServerLevel)) {
+            return InteractionResult.SUCCESS;
         }
         BlockPos blockPos = blockHitResult.getBlockPos();
-        if (!(world.getBlockState(blockPos).getBlock() instanceof FluidBlock)) {
-            return ActionResult.PASS;
+        if (!(world.getBlockState(blockPos).getBlock() instanceof LiquidBlock)) {
+            return InteractionResult.PASS;
         }
-        if (world.canEntityModifyAt(user, blockPos) && user.canPlaceOn(blockPos, blockHitResult.getSide(), itemStack)) {
-            return ActionResult.FAIL;
+        if (world.mayInteract(user, blockPos) && user.mayUseItemAt(blockPos, blockHitResult.getDirection(), itemStack)) {
+            return InteractionResult.FAIL;
         }
-        EntityType<?> entityType = this.getEntityType(itemStack);
-        LittleGuyEntity entity = (LittleGuyEntity) entityType.spawnFromItemStack((ServerWorld)world, itemStack, user, blockPos, SpawnReason.SPAWN_ITEM_USE, false, false);
+        EntityType<?> entityType = this.getType(itemStack);
+        LittleGuyEntity entity = (LittleGuyEntity) entityType.spawn((ServerLevel)world, itemStack, user, blockPos, EntitySpawnReason.SPAWN_ITEM_USE, false, false);
 
         if (entity == null) {
-            return ActionResult.PASS;
+            return InteractionResult.PASS;
         } else {
             entity.setColor(this.color);
         }
-        itemStack.decrementUnlessCreative(1, user);
-        user.incrementStat(Stats.USED.getOrCreateStat(this));
-        world.emitGameEvent(user, GameEvent.ENTITY_PLACE, (entity).getEntityPos());
-        return ActionResult.CONSUME;
+        itemStack.consume(1, user);
+        user.awardStat(Stats.ITEM_USED.get(this));
+        world.gameEvent(user, GameEvent.ENTITY_PLACE, (entity).position());
+        return InteractionResult.CONSUME;
     }
 }

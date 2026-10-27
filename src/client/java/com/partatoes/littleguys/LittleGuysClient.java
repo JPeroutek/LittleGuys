@@ -3,9 +3,9 @@ package com.partatoes.littleguys;
 import com.partatoes.littleguys.entity.*;
 import com.partatoes.littleguys.item.ModColorProviders;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.util.DyeColor;
+import net.minecraft.world.item.DyeColor;
 
 public class LittleGuysClient implements ClientModInitializer {
 	@Override
@@ -13,14 +13,14 @@ public class LittleGuysClient implements ClientModInitializer {
 		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
 
 		EntityRendererRegistry.register(ModEntities.LITTLEGUY_ENTITY, LittleGuyRenderer::new);
-		EntityModelLayerRegistry.registerModelLayer(ModModelLayers.LITTLEGUY, LittleGuyModel::getTexturedModelData);
+		ModelLayerRegistry.registerModelLayer(ModModelLayers.LITTLEGUY, LittleGuyModel::getTexturedModelData);
 
 		EntityRendererRegistry.register(ModEntities.LITTLEHORSE_ENTITY, LittleHorseRenderer::new);
-		EntityModelLayerRegistry.registerModelLayer(ModModelLayers.LITTLEHORSE, LittleHorseModel::getTexturedModelData);
+		ModelLayerRegistry.registerModelLayer(ModModelLayers.LITTLEHORSE, LittleHorseModel::getTexturedModelData);
 
 		for (DyeColor c : DyeColor.values()) {
 			EntityRendererRegistry.register(ModEntities.COLOR_LITTLEGUY_BIMAP.get(c), LittleGuyRenderer::new);
-			EntityModelLayerRegistry.registerModelLayer(ModModelLayers.COLOR_LITTLEGUY_MODEL_LAYERS.get(c), LittleGuyModel::getTexturedModelData);
+			ModelLayerRegistry.registerModelLayer(ModModelLayers.COLOR_LITTLEGUY_MODEL_LAYERS.get(c), LittleGuyModel::getTexturedModelData);
 		}
 
 		ModColorProviders.registerColorProviders();

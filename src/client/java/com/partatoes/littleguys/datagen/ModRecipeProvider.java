@@ -2,76 +2,81 @@ package com.partatoes.littleguys.datagen;
 
 import com.partatoes.littleguys.LittleGuys;
 import com.partatoes.littleguys.item.ModItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.DyeItem;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends FabricRecipeProvider {
-    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ModRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter recipeExporter) {
-        return new RecipeGenerator(wrapperLookup, recipeExporter) {
+    protected RecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput recipeExporter) {
+        return new RecipeProvider(wrapperLookup, recipeExporter) {
             @Override
-            public void generate() {
-                createShaped(RecipeCategory.COMBAT, ModItems.LITTLEGUY_ITEM, 4)
+            public void buildRecipes() {
+                shaped(RecipeCategory.COMBAT, ModItems.LITTLEGUY_ITEM, 4)
                         .pattern("S")
                         .pattern("C")
-                        .input('S', Blocks.SOUL_SAND)
-                        .input('C', Blocks.CLAY)
-                        .criterion(hasItem(Blocks.SOUL_SAND), conditionsFromItem(Blocks.SOUL_SAND))
-                        .criterion(hasItem(Blocks.CLAY), conditionsFromItem(Blocks.CLAY))
-                        .offerTo(exporter, RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(LittleGuys.MOD_ID, "littleguys_from_clay_and_soulsand")));
+                        .define('S', Blocks.SOUL_SAND)
+                        .define('C', Blocks.CLAY)
+                        .unlockedBy(getHasName(Blocks.SOUL_SAND), has(Blocks.SOUL_SAND))
+                        .unlockedBy(getHasName(Blocks.CLAY), has(Blocks.CLAY))
+                        .save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(LittleGuys.MOD_ID, "littleguys_from_clay_and_soulsand")));
 
-                createShaped(RecipeCategory.COMBAT, ModItems.LITTLEGUY_ITEM, 1)
+                shaped(RecipeCategory.COMBAT, ModItems.LITTLEGUY_ITEM, 1)
                         .pattern("s")
                         .pattern("c")
-                        .input('s', ModItems.SOULSAND_PILE_ITEM)
-                        .input('c', Items.CLAY_BALL)
-                        .criterion(hasItem(ModItems.SOULSAND_PILE_ITEM), conditionsFromItem(ModItems.SOULSAND_PILE_ITEM))
-                        .criterion(hasItem(Items.CLAY_BALL), conditionsFromItem(Items.CLAY_BALL))
-                        .offerTo(exporter, RegistryKey.of(RegistryKeys.RECIPE, Identifier.of(LittleGuys.MOD_ID, "littleguy_from_clay_ball_and_soulsand_pile")));
+                        .define('s', ModItems.SOULSAND_PILE_ITEM)
+                        .define('c', Items.CLAY_BALL)
+                        .unlockedBy(getHasName(ModItems.SOULSAND_PILE_ITEM), has(ModItems.SOULSAND_PILE_ITEM))
+                        .unlockedBy(getHasName(Items.CLAY_BALL), has(Items.CLAY_BALL))
+                        .save(output, ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(LittleGuys.MOD_ID, "littleguy_from_clay_ball_and_soulsand_pile")));
 
-                createShaped(RecipeCategory.COMBAT, ModItems.LITTLEHORSE_ITEM, 1)
+                shaped(RecipeCategory.COMBAT, ModItems.LITTLEHORSE_ITEM, 1)
                         .pattern("s  ")
                         .pattern("cdc")
                         .pattern("c c")
-                        .input('s', ModItems.SOULSAND_PILE_ITEM)
-                        .input('c', Items.CLAY_BALL)
-                        .input('d', Items.SADDLE)
-                        .criterion(hasItem(ModItems.SOULSAND_PILE_ITEM), conditionsFromItem(ModItems.SOULSAND_PILE_ITEM))
-                        .criterion(hasItem(Items.CLAY_BALL), conditionsFromItem(Items.CLAY_BALL))
-                        .criterion(hasItem(Items.SADDLE), conditionsFromItem(Items.SADDLE))
-                        .offerTo(exporter);
+                        .define('s', ModItems.SOULSAND_PILE_ITEM)
+                        .define('c', Items.CLAY_BALL)
+                        .define('d', Items.SADDLE)
+                        .unlockedBy(getHasName(ModItems.SOULSAND_PILE_ITEM), has(ModItems.SOULSAND_PILE_ITEM))
+                        .unlockedBy(getHasName(Items.CLAY_BALL), has(Items.CLAY_BALL))
+                        .unlockedBy(getHasName(Items.SADDLE), has(Items.SADDLE))
+                        .save(output);
 
-                createShapeless(RecipeCategory.MISC, ModItems.SOULSAND_PILE_ITEM, 4)
-                        .input(Blocks.SOUL_SAND)
-                        .criterion(hasItem(Blocks.SOUL_SAND), conditionsFromItem(Blocks.SOUL_SAND))
-                        .offerTo(exporter);
+                shapeless(RecipeCategory.MISC, ModItems.SOULSAND_PILE_ITEM, 4)
+                        .requires(Blocks.SOUL_SAND)
+                        .unlockedBy(getHasName(Blocks.SOUL_SAND), has(Blocks.SOUL_SAND))
+                        .save(output);
 
-                offer2x2CompactingRecipe(RecipeCategory.MISC, Blocks.SOUL_SAND, ModItems.SOULSAND_PILE_ITEM);
+                twoByTwoPacker(RecipeCategory.MISC, Blocks.SOUL_SAND, ModItems.SOULSAND_PILE_ITEM);
 
-                ModItems.LITTLEGUY_COLORS.forEach((dc, item) -> createShapeless(RecipeCategory.MISC, item)
-                        .input(ModItems.LITTLEGUY_ITEM)
-                        .input(DyeItem.byColor(dc))
-                        .criterion(hasItem(DyeItem.byColor(dc)), conditionsFromItem(DyeItem.byColor(dc)))
-                        .criterion(hasItem(ModItems.LITTLEGUY_ITEM), conditionsFromItem(ModItems.LITTLEGUY_ITEM))
-                        .offerTo(exporter));
+                ModItems.LITTLEGUY_COLORS.forEach((dc, item) -> shapeless(RecipeCategory.MISC, item)
+                        .requires(ModItems.LITTLEGUY_ITEM)
+                        .requires(dyeItem(dc))
+                        .unlockedBy(getHasName(dyeItem(dc)), has(dyeItem(dc)))
+                        .unlockedBy(getHasName(ModItems.LITTLEGUY_ITEM), has(ModItems.LITTLEGUY_ITEM))
+                        .save(output));
             }
         };
+    }
+
+    private static Item dyeItem(DyeColor color) {
+        return BuiltInRegistries.ITEM.getValue(Identifier.withDefaultNamespace(color.getSerializedName() + "_dye"));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.partatoes.littleguys.entity;
 
-import net.minecraft.client.render.entity.state.LivingHorseEntityRenderState;
+import net.minecraft.client.renderer.entity.state.EquineRenderState;
 
-public class LittleHorseEntityRenderState extends LivingHorseEntityRenderState {
+public class LittleHorseEntityRenderState extends EquineRenderState {
 }
